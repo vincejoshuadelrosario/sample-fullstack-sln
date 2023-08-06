@@ -1,0 +1,107 @@
+{
+  "name": "weather-forecast",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "projectType": "application",
+  "prefix": "web-app",
+  "sourceRoot": "apps/weather-forecast/src",
+  "tags": [],
+  "targets": {
+    "build": {
+      "executor": "@angular-devkit/build-angular:browser",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/apps/weather-forecast",
+        "index": "apps/weather-forecast/src/index.html",
+        "main": "apps/weather-forecast/src/main.ts",
+        "polyfills": ["zone.js"],
+        "tsConfig": "apps/weather-forecast/tsconfig.app.json",
+        "assets": [
+          "apps/weather-forecast/src/favicon.ico",
+          "apps/weather-forecast/src/assets"
+        ],
+        "styles": ["apps/weather-forecast/src/styles.scss"],
+        "scripts": []
+      },
+      "configurations": {
+        "production": {
+          "budgets": [
+            {
+              "type": "initial",
+              "maximumWarning": "500kb",
+              "maximumError": "1mb"
+            },
+            {
+              "type": "anyComponentStyle",
+              "maximumWarning": "2kb",
+              "maximumError": "4kb"
+            }
+          ],
+          "outputHashing": "all"
+        },
+        "development": {
+          "buildOptimizer": false,
+          "optimization": false,
+          "vendorChunk": true,
+          "extractLicenses": false,
+          "sourceMap": true,
+          "namedChunks": true
+        }
+      },
+      "defaultConfiguration": "production"
+    },
+    "serve": {
+      "executor": "@angular-devkit/build-angular:dev-server",
+      "options": {
+        "port": 4200,
+        "ssl": true,
+        "sslCert": "ssl/dev-server.crt",
+        "sslKey": "ssl/dev-server.key"
+      },
+      "configurations": {
+        "production": {
+          "browserTarget": "weather-forecast:build:production"
+        },
+        "development": {
+          "browserTarget": "weather-forecast:build:development"
+        }
+      },
+      "defaultConfiguration": "development"
+    },
+    "extract-i18n": {
+      "executor": "@angular-devkit/build-angular:extract-i18n",
+      "options": {
+        "browserTarget": "weather-forecast:build"
+      }
+    },
+    "lint": {
+      "executor": "@nx/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": [
+          "apps/weather-forecast/**/*.ts",
+          "apps/weather-forecast/**/*.html"
+        ]
+      }
+    },
+    "test": {
+      "executor": "@nx/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "options": {
+        "jestConfig": "apps/weather-forecast/jest.config.ts",
+        "passWithNoTests": true
+      },
+      "configurations": {
+        "ci": {
+          "ci": true,
+          "codeCoverage": true
+        }
+      }
+    },
+    "serve-static": {
+      "executor": "@nx/web:file-server",
+      "options": {
+        "buildTarget": "weather-forecast:build"
+      }
+    }
+  }
+}
